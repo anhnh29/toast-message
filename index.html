@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <div>
+      <div id="toast"></div>
+      <div class="boxBtn">
+        <button class="btn btn--success" onclick="handleOnSuccess()">
+          Success
+        </button>
+        <button class="btn btn--error" onclick="handleOnError()">Error</button>
+        <br />
+        <button class="btn btn--info" onclick="handleOnInfo()">Info</button>
+        <button class="btn btn--warning" onclick="handleOnWarning()">
+          Warning
+        </button>
+      </div>
+    </div>
+  </body>
+  <script>
+    function toast({ title, content, type, delay }) {
+      const icons = {
+        success: "fa-solid fa-circle-check",
+        info: "fa-solid fa-info",
+        warning: "fa-solid fa-exclamation",
+        error: "fa-solid fa-exclamation",
+      };
+      const timeDelay = delay / 1000;
+      const main = document.getElementById("toast");
+
+      if (main) {
+        const toast = document.createElement("div");
+        const autoRemoveId = setTimeout(() => {
+          main.removeChild(toast);
+        }, delay + 1000);
+        // Remove toast when clicked
+        toast.onclick = function (e) {
+          if (e.target.closest(".toast__close")) {
+            main.removeChild(toast);
+            clearTimeout(autoRemoveId);
+          }
+        };
+        toast.classList.add("toast", `toast--${type}`);
+        toast.style.animation = `slideInLeft ease .3s , removeSlide linear 3s forwards`;
+        toast.innerHTML = `
+          <div class="toast__icon"><i class="${icons[type]}"></i></div>
+            <div class="toast__body">
+              <div class="toast__title">${title}</div>  
+              <div class="toast__content">${content}</div>
+            </div>
+          <div class="toast__close" ><i class="fa-solid fa-xmark"></i></div>
+        `;
+        main.appendChild(toast);
+      }
+    }
+
+    function handleOnSuccess() {
+      toast({
+        title: "Success",
+        content: "Messss success",
+        type: "success",
+        delay: 2000,
+      });
+    }
+
+    function handleOnError() {
+      toast({
+        title: "Error",
+        content: "Messss error",
+        type: "error",
+        delay: 2000,
+      });
+    }
+
+    function handleOnInfo() {
+      toast({
+        title: "Info",
+        content: "Messss info",
+        type: "info",
+        delay: 2000,
+      });
+    }
+    function handleOnWarning() {
+      toast({
+        title: "Warning",
+        content: "Messss Warning",
+        type: "warning",
+        delay: 2000,
+      });
+    }
+  </script>
+</html>
